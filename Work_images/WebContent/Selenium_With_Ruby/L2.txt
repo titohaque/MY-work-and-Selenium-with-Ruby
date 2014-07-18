@@ -1,0 +1,56 @@
+02-23-14
+demo.borland.com/shopitv60/default.asp
+
+#http://demo.borland.com/shopitv60/default.asp
+require 'watir-webdriver'
+b = Watir::Browser.new
+b.goto 'demo.borland.com/shopitv60/default.asp'
+
+b.a(:class => 'linkShopIt').click
+
+b.text_field(:name => "name").set "Enam"
+b.input(:name => "New-Name-Button").click
+b.a(:href => "products.asp").click
+b.a(:text => "Shirt").click
+b.a(:class => "linkShopIt").click
+
+b.a(:class => "linkShopIt").click
+b.a(:href => "products.asp").click
+
+b.a(:text => "Pants").click
+b.a(:class => "linkShopIt").click
+b.a(:class => "linkShopIt").click
+
+sleep 2
+b.a(:text => "Check out").click
+#b.a(:text => "Check out").when_present.click
+
+b.a(:text => "Continue").click
+b.text_field(:name => "address").set "351 S St Andrews Pl Apt306"
+b.text_field(:name => "city").set "LA"
+b.text_field(:name => "state").set "CA"
+b.text_field(:name => "zip").set "90020"
+
+
+b.select_list(:name => "cardtype").select "MasterCard"
+
+b.text_field(:name => "cardnumber").set "123-1234-1234"
+b.text_field(:name => "expiration").set "02/14"
+b.input(:name => "Buy now").click
+
+b.a(:class => "linkShopIt").click
+b.a(:class => "linkShopIt").click
+
+
+
+
+
+
+
+
+
+
+
+
+
+

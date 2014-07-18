@@ -1,0 +1,304 @@
+
+Documentation: Ruby bindings
+
+http://code.google.com/p/selenium/wiki/RubyBindings
+
+ different APIs:
+
+ Selenium::WebDriver - the WebDriver API
+
+  Selenium::Client - Selenium RC API (previously released as the 
+selenium-client gem) (optional)
+
+ # focusing on the two main classes:
+1.Selenium::WebDriver::Driver 
+2.Selenium::WebDriver::Element
+This is the entry point to the whole WebDriver API. 
+
+API Example:
+
+require "selenium-webdriver"
+
+driver = Selenium::WebDriver.for :firefox
+driver.navigate.to "http://google.com"
+
+element = driver.find_element(:name, 'q')
+element.send_keys "Hello WebDriver!"
+element.submit
+
+puts driver.title
+
+driver.quit
+
+Driver examples: 
+# execute arbitrary javascript
+puts driver.execute_script("return window.location.pathname")
+
+# pass elements between Ruby and JavaScript
+element = driver.execute_script("return document.body")
+driver.execute_script("return arguments[0].tagName", element) #=> "BODY"
+
+# wait for a specific element to show up
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+wait.until { driver.find_element(:id => "foo") }
+
+# switch to a frame
+driver.switch_to.frame "some-frame" # name or id
+driver.switch_to.frame driver.find_element(:id, 'some-frame') # frame element
+
+# switch back to the main document
+driver.switch_to.default_content
+
+# repositionning and resizing browser window:
+driver.manage.window.move_to(300, 400)
+driver.manage.window.resize_to(500, 800)
+driver.manage.window.maximize
+
+
+Element examples:
+
+# get an attribute
+class_name = element.attribute("class")
+
+# is the element visible on the page?
+element.displayed?
+
+# click the element
+element.click
+
+# get the element location
+element.location
+
+# scroll the element into view, then return its location
+element.location_once_scrolled_into_view
+
+# get the width and height of an element
+element.size
+
+# press space on an element - see Selenium::WebDriver::Keys for possible values
+element.send_keys :space
+
+# get the text of an element
+element.text
+
+Advanced user interactions (see ActionBuilder):
+
+driver.action.key_down(:shift).
+              click(element).
+              double_click(second_element).
+              key_up(:shift).
+              drag_and_drop(element, third_element).
+              perform
+
+
+
+Firefox:
+
+Adding an extension
+
+
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile.add_extension("/path/to/firebug.xpi")
+
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+Using an existing profile:
+
+
+driver = Selenium::WebDriver.for(:firefox, :profile => "my-existing-profile")
+
+If you want to use your default profile, pass :profile => "default"
+
+You can also get a Profile instance for an existing profile and tweak its preferences. This does not modify the existing profile, only the one used by WebDriver.
+
+default_profile = Selenium::WebDriver::Firefox::Profile.from_name "default"
+default_profile.native_events = true
+
+driver = Selenium::WebDriver.for(:firefox, :profile => default_profile)
+
+
+Tweaking Firefox preferences
+
+Use a proxy:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+proxy = Selenium::WebDriver::Proxy.new(:http => "proxy.org:8080")
+profile.proxy = proxy
+
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+Automatically download files to a given folder:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile['browser.download.dir'] = "/tmp/webdriver-downloads"
+profile['browser.download.folderList'] = 2
+profile['browser.helperApps.neverAsk.saveToDisk'] = "application/pdf"
+profile['pdfjs.disabled'] = true
+
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+If you are using the remote driver you can still configure the Firefox profile:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile['foo.bar'] = true
+
+capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(:firefox_profile => profile)
+driver = Selenium::WebDriver.for :remote, :desired_capabilities => capabilities
+
+
+Custom Firefox path
+
+If your Firefox executable is in a non-standard location:
+
+Selenium::WebDriver::Firefox.path = "/path/to/firefox"
+driver = Selenium::WebDriver.for :firefox
+
+SSL Certificates
+
+The Firefox driver ignores invalid SSL certificates by default. If this is not 
+the behaviour you want, you can do:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile.secure_ssl = true
+
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+There is an edge case where the default SSL certificate check will not work correctly. 
+WebDriver assumes that the certificate is untrusted whenever there's a problem, which 
+means a certificate from a trusted issuer but with a hostname mismatch
+ (e.g. a production certificate in a test environment) will not be correctly ovverriden.
+ See UntrustedSSLCertificates for more on why this is. To work around it, tell the 
+Firefox driver to not assume the issuer is untrusted:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile.assume_untrusted_certificate_issuer = false
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+Not that Profile#secure_ssl remains set to the default value of true in the above 
+example.
+Native events
+
+Native events are enabled by default on Windows. To turn them off:
+
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile.native_events = false
+
+driver = Selenium::WebDriver.for(:firefox, :profile => profile)
+
+Experimental support for native events is available on Linux.
+ Set profile.native_events = true to turn this on. 
+
+Timeouts:
+
+Implicit waits
+
+WebDriver lets you configure implicit waits, so that a call to #find_element will 
+wait for a specified amount of time before raising a NoSuchElementError:
+
+  driver = Selenium::WebDriver.for :firefox
+  driver.manage.timeouts.implicit_wait = 3 # seconds
+
+Explicit waits
+
+Use the Wait class to explicitly wait for some condition:
+
+  wait = Selenium::WebDriver::Wait.new(:timeout => 3)
+  wait.until { driver.find_element(:id => "cheese").displayed? }
+
+Internal timeouts
+
+Internally, WebDriver uses HTTP to communicate with a lot of the drivers (the 
+JsonWireProtocol). By default, Net::HTTP from Ruby's standard library is used, 
+which has a default timeout of 60 seconds. If you call Driver#get on a page that 
+takes more than 60 seconds to load, you'll see a TimeoutError raised from Net::HTTP. 
+You can configure this timeout (before launching a browser) by doing:
+
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.timeout = 120 # seconds
+  driver = Selenium::WebDriver.for(:remote, :http_client => client)
+
+
+Using Curb or your own HTTP client:
+
+For internal HTTP communication, Net::HTTP is used by default. If you e.g. have the Curb gem installed, you can switch to it by doing:
+
+require 'selenium/webdriver/remote/http/curb'
+
+client = Selenium::WebDriver::Remote::Http::Curb.new
+driver = Selenium::WebDriver.for(:firefox, :http_client => client)
+
+
+
+WebDriver-backed Selenium:
+
+require 'selenium/webdriver'
+require 'selenium/client'
+require 'selenium/server'
+
+server = Selenium::Server.new("selenium-server-standalone-2.19.0.jar", :background => true)
+server.start
+
+begin
+  selenium = Selenium::Client::Driver.new :host    => "localhost",
+                                          :port    => 4444,
+                                          :url     => "http://google.com",
+                                          :browser => "*webdriver"
+  driver = Selenium::WebDriver.for :remote, :url => "http://localhost:4444/wd/hub/"
+
+  selenium.start :driver => driver
+  selenium.open "/"
+  selenium.type 'q', 'webdriver-backed selenium'
+
+  p driver.title == selenium.title
+
+  selenium.stop
+ensure
+  server.stop
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Capybara
+https://github.com/jnicklas/capybara
+
+
+
+
+
+
+
+
+
+
+
+http://rake.rubyforge.org/Rake/TestTask.html

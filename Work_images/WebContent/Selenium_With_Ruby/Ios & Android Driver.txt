@@ -1,0 +1,11 @@
+http://ios-driver.github.io/ios-driver/
+https://github.com/ios-driver/ios-driver/
+
+Ruby:
+1.# iphone
+driver = Selenium::WebDriver.for :remote, :url => "http://localhost:5555/wd/hub",
+ :desired_capabilities => :iphone
+
+2.#ipad
+driver = Selenium::WebDriver.for :remote, :url => "http://localhost:5555/wd/hub",
+ :desired_capabilities => :ipad

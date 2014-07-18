@@ -1,0 +1,203 @@
+http://testingbot.com/support/getting-starExample feature
+view plaincopy to clipboardprint?
+
+    Feature: YouTube has a search function.  
+      
+    Background:  
+      Given I am on YouTube  
+      
+    Scenario: Search for a term  
+      When I fill in "search_query" with "text adventure"  
+      And I press "search-btn"  
+      Then I should see "GET LAMP: The Text Adventure Documentary"  
+
+
+Example steps
+view plaincopy to clipboardprint?
+
+     Given /^I am on (.+)$/ do |url|  
+      visit "http://www.youtube.com"  
+    end  
+      
+    When /^I fill in "([^"]*)" with "([^"]*)"$/ do |field, value|  
+      fill_in(field, :with => value)  
+    end  
+      
+    When /^I press "([^"]*)"$/ do |button|  
+      click_button(button)  
+    end  
+      
+    Then /^I should see "([^"]*)"$/ do |text|  
+      page.should have_content(text)  
+    end  
+      
+              
+
+Example env.rb
+Ads by MediaPlayerEnhanceAd Options
+view plaincopy to clipboardprint?
+
+    require 'capybara'  
+    require 'capybara/cucumber'  
+    require 'rspec'  
+    require 'selenium/webdriver'  
+    require 'testingbot/cucumber'  
+      
+    Capybara.default_driver = :testingbot  ed/cucumber.html
+
+
+Set up your first Ruby test with RSpec and Capybara:
+
+Example with Selenium webdriver
+view plaincopy to clipboardprint?
+
+    require 'rspec'  
+    require 'capybara/rspec'  
+    require 'testingbot'  
+    require 'testingbot/capybara'  
+      
+    TestingBot::config do |config|  
+      config[:desired_capabilities] = { :browserName => "firefox", :version => 9, :platform => "WINDOWS" }  
+      # config.require_tunnel # uncomment if you want to use our Tunnel  
+    end  
+      
+    describe "People", :type => :request do  
+      before :each do  
+        Capybara.current_driver = :testingbot  
+        Capybara.app_host = "http://testingbot.com"  
+      end  
+      
+      it 'has a homepage with the word Selenium' do  
+        visit '/'  
+        page.should have_content('Selenium')  
+      end  
+    end  
+
+Set up your first Ruby test with RSpec:
+
+
+Example code RSpec (2)
+$ rspec example.rb
+view plaincopy to clipboardprint?
+
+    require 'rubygems'  
+    require "selenium/client"  
+    require 'rspec'  
+    require 'testingbot'  
+      
+    describe "Test", :type => :selenium do  
+      attr_reader :selenium_driver  
+      before(:all) do  
+          @selenium_driver = Selenium::Client::Driver.new \  
+              :host => "hub.testingbot.com",  
+              :port => 4444,   
+              :browser => "firefox",   
+              :url => "http://www.google.com",   
+              :timeout_in_second => 60,  
+              :platform => "WINDOWS",  
+              :version => "10"  
+      end  
+      
+      before(:each) do  
+        @selenium_driver.start_new_browser_session  
+      end  
+      
+      after(:each) do  
+        @selenium_driver.close_current_browser_session  
+      end  
+          
+      it "can find the right title" do      
+        @selenium_driver.open "/"  
+        @selenium_driver.title.should eql("Google")     
+      end  
+    end  
+
+
+RSpec 2 Multi-Browser Example (:multibrowser filter)
+$ rspec example.rb
+view plaincopy to clipboardprint?
+
+    require 'rubygems'  
+    require "selenium/client"  
+    require 'rspec'  
+    require 'testingbot'  
+    require 'testingbot/tunnel'  
+      
+    TestingBot::config do |config|  
+      config[:desired_capabilities] = [{ :browserName => "firefox", :version => 9, :platform => "WINDOWS" }, { :browserName => "firefox", :version => 11, :platform => "WINDOWS" }]  
+    end  
+      
+    describe "Google", :type => :selenium, :multibrowser => true do  
+        it "can find the right title" do      
+          page.navigate.to "http://www.google.com"  
+          page.title.should eql("Google")     
+        end  
+    end  
+          
+
+
+Example code RSpec (1)
+$ spec example.rb
+Ads by MediaPlayerEnhanceAd Options
+view plaincopy to clipboardprint?
+
+    require 'rubygems'  
+    gem "rspec", "<2"  
+    gem "selenium-client"  
+    require "selenium/client"  
+    require "selenium/rspec/spec_helper"  
+    gem "testingbot"  
+    require "testingbot"  
+      
+    describe "Test" do  
+      attr_reader :selenium_driver  
+      alias :page :selenium_driver  
+        
+      before(:all) do  
+            @selenium_driver = Selenium::Client::Driver.new \  
+                :host => "hub.testingbot.com",  
+                :port => 4444,   
+                :browser => "firefox",   
+                :url => "http://www.google.com",   
+                :timeout_in_second => 60,  
+                :platform => "WINDOWS",  
+                :version => "10"  
+        end  
+      
+        before(:each) do  
+          selenium_driver.start_new_browser_session  
+        end  
+      
+        append_after(:each) do   
+          @selenium_driver.close_current_browser_session  
+        end  
+      
+        it "can find the right title" do      
+          page.open "/"  
+          page.title.should eql("Google")     
+        end  
+    end  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

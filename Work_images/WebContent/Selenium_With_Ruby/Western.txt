@@ -1,0 +1,40 @@
+*//myAccountButt
+require "watir-webdriver"
+b = Watir::Browser.new
+b.goto "http://www.westernasset.com"
+
+b.a(:id=>"myAccountButt").click
+b.a(:href=>"https://www.westernasset.com/us/en/contact/comments.cfm?contact_type=requestlogin").click
+sleep 2
+b.select_list(:name=>"prefix").select "Mr."
+b.text_field(:id=>"company").set "Boss of Enam"
+
+b.text_field(:name=>"pTitle").set "I am boss of company"
+b.select_list(:id=>"company_type").select "Other"
+
+sleep 2
+b.text_field(:name=>"name_first").set "Md"
+b.text_field(:id=>"address_1").set "351 S St Andrews Pl APT306"
+
+b.text_field(:name=>"name_last").set "Haque"
+b.text_field(:name=>"email").set "Haque@yahoo.com"
+b.text_field(:name=>"city").set "Los Angeles"
+
+b.text_field(:name=>"phone").set "2138415069"
+b.text_field(:name=>"phone_ext").set "069"
+sleep 4
+b.text_field(:id=>"state").set "California"
+
+b.text_field(:name=>"fax").set "12069"
+b.text_field(:id=>"zip").set "90025"
+
+b.text_field(:id=>"country").set "America"
+
+b.select_list(:name=>"total_plan_size").select "Large"
+
+b.text_field(:name=>"fixed_income_allocation").set "25"
+sleep 3
+
+b.textarea(:name=>"message").set "I would like to receive emails about the latest Research Papers, Quarterly Reports & Performance"
+b.checkbox(:name=>"email_alert").click
+b.span(:id=>"commentType").click

@@ -1,0 +1,218 @@
+
+
+
+Given /^I am on the Welcome Screen$/ do
+  
+end
+
+
+
+
+Given(/^I am partner with valid credentials and on the jhilburn iPad app login screen$/) do
+ element_exists("view")
+ sleep(STEP_PAUSE)
+  
+
+end
+
+
+
+When(/^I touch user name$/)do
+touch("TextField index:0")
+end
+
+
+Then(/^Enter "(.*?)" as username$/) do
+ |arg1|
+	keyboard_enter_text("#{arg1}")
+end
+
+
+When(/^I touch password$/) do 
+	
+touch("TextField index:1")
+end
+
+
+Then(/^Enter "(.*?)" as password$/) do |arg1|
+	keyboard_enter_text("#{arg1}")
+end
+
+
+Then(/^touch button login$/) do
+touch("view marked:'LOG IN'")
+end
+
+
+
+When(/^User should be login and now on Home page$/) do
+	
+sleep 3
+	wait_for_elements_exist("view marked:'Shop'")
+end
+
+
+
+Then(/^User touch "(.*?)" label$/) do 
+|arg1|
+	wait_for_elements_exist("view marked:'#{arg1}'")
+	touch("view marked:'#{arg1}'")
+	
+end
+sleep 2
+
+Then(/^User can see Shop menu and touch "(.*?)"$/) do |arg1|
+	wait_for_elements_exist("view marked:'#{arg1}'")
+touch("view marked:'#{arg1}'")
+
+end
+
+
+
+Then(/^User touch on "(.*?)"$/) do |arg1|
+	wait_for_elements_exist("ButtonLabel text:'#{arg1}'")
+	touch("ButtonLabel text:'#{arg1}'")
+
+end
+
+
+Then(/^User touch on edit box "(.*?)"$/) do |arg1|
+	wait_for_elements_exist("view marked:'#{arg1}'")
+	touch("view marked:'#{arg1}'")
+end
+
+
+
+Then(/^User will enter "(.*?)"$/) do |arg1|
+	#wait_for_elements_exist("view marked:'#{arg1}'")
+	
+
+sleep 3
+
+	keyboard_enter_text("#{arg1}")
+end
+
+
+
+Then(/^select "(.*?)" as customer$/) do |arg1|
+	wait_for_elements_exist("view marked:'#{arg1}'")
+	touch("label text:'#{arg1}'")
+end
+
+
+
+
+Then(/^touch styleboard$/) do 
+	#wait_for_elements_exist("view marked:'#{arg1}'")
+	
+sleep 3
+	
+
+touch("Button index:1")
+	sleep 3
+end
+
+Then(/^touch white blue stripe$/) do 
+	
+
+sleep 3
+
+	double_tap("ImageView index:21")
+	
+
+sleep 3
+
+
+end
+
+Then(/^check price for White Navy Twill Check is "(.*?)"$/) do |arg1|
+
+	if element_exists("Label text:'#{arg1}'") == false
+
+	
+	print "Price for White Navy Twill is not '#{arg1}'"
+
+	
+end
+
+end
+
+
+
+Then(/^touch the close button$/) do
+	touch("Button index:7")
+end
+
+
+Then(/^User Touch Tools button$/) do
+
+
+	sleep 2
+
+	touch("Button index:8")
+
+end
+
+When(/^User touch logout$/) do
+	wait_for_elements_exist("view marked:'LOG OUT'")
+	
+sleep 2
+
+	touch("view marked:'LOG OUT'")
+
+end
+
+Then(/^Click yes on logout pop up$/) do
+	wait_for_elements_exist("view marked:'Yes'")
+
+	sleep 2
+
+
+
+	touch("view marked:'Yes'")
+
+end
+
+
+Then(/^User is back on Login screen$/) do
+
+	wait_for_elements_exist("view marked:'LOG IN'")
+
+
+	#sleep (3)
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

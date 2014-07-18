@@ -1,0 +1,4 @@
+ What is API Testing?
+
+An API (Application Programming Interface) is a collection of software 
+functions and procedures, called API 

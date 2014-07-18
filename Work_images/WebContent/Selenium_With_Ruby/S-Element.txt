@@ -1,0 +1,138 @@
+
+gem install selenium-webdriver
+
+require 'rubygems'
+require 'selenium-webdriver'
+
+driver = Selenium::WebDriver.for :firefox
+driver.get "http://google.com"
+
+element = driver.find_element :name => "q"
+element.send_keys "Cheese!"
+element.submit
+
+puts "Page title is #{driver.title}"
+
+wait = Selenium::WebDriver::Wait.new(:timeout => 10)
+wait.until { driver.title.downcase.start_with? "cheese!" }
+
+puts "Page title is #{driver.title}"
+driver.quit
+
+Selenium-WebDriver API Commands and Operations:
+
+Fetching a Page:
+
+driver.get "http://www.google.com"
+
+web elements:
+Id attribute
+
+element = driver.find_element(:id, "coolestWidgetEvah")
+
+Name:
+cheese = driver.find_element(:name, "cheese")
+
+Class: 
+cheeses = driver.find_elements(:class_name, "cheese")
+
+or
+
+cheeses = driver.find_elements(:class, "cheese")
+
+Tag Name:
+frame = driver.find_element(:tag_name, "iframe")
+
+Link:
+cheese = driver.find_element(:link_text, "cheese")
+
+or
+
+cheese = driver.find_element(:link, "cheese")
+
+Css:
+cheese = driver.find_element(:css, "#food span.dairy.aged")
+
+Xpath:
+inputs = driver.find_elements(:xpath, "//input")
+
+
+User Input - Filling In Forms:
+select = driver.find_element(:tag_name, "select")
+all_options = select.find_elements(:tag_name, "option")
+all_options.each do |option|
+  puts "Value is: " + option.attribute("value")
+  option.click
+end
+
+
+select = Selenium::WebDriver::Support::Select.new(driver.find_element(:tag_name, "select"))
+    select.deselect_all()
+    select.select_by(:text, "Edam")
+
+
+driver.find_element(:id, "submit").click
+
+element.submit
+
+
+driver.navigate.to "http://www.example.com"
+
+driver.navigate.forward
+driver.navigate.back
+
+Cookies:
+driver.get "http://www.example.com"
+
+# Now set the cookie. Here's one for the entire domain
+# the cookie name here is 'key' and its value is 'value'
+driver.manage.add_cookie(:name => 'key', :value => 'value')
+# additional keys that can be passed in are:
+# :path => String, :secure -> Boolean, :expires -> Time, DateTime, or seconds since epoch
+
+# And now output all the available cookies for the current URL
+driver.manage.all_cookies.each { |cookie|
+    puts "&#35;{cookie[:name]} => &#35;{cookie[:value]}"
+}
+
+# You can delete cookies in 2 ways
+# By name
+driver.manage.delete_cookie("CookieName")
+# Or all of them
+driver.manage.delete_all_cookies
+
+Changing the User Agent:
+profile = Selenium::WebDriver::Firefox::Profile.new
+profile['general.useragent.override'] = "some UA string"
+driver = Selenium::WebDriver.for :firefox, :profile => profile
+
+Drag And Drop:
+element = driver.find_element(:name => 'source')
+target = driver.find_element(:name => 'target')
+
+driver.action.drag_and_drop(element, target).perform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

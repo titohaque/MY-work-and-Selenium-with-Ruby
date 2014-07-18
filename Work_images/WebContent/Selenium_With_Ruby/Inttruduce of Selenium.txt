@@ -1,0 +1,74 @@
+What is selenium?
+Selenium is a portable software testing framework for web applications.
+Selenium provides a record/playback tool for authoring tests without
+learning a test scripting language (Selenium IDE). It also provides a
+ test domain-specific language (Selenese) to write tests in a number 
+of popular programming languages, including Java, C#, Groovy, Perl, PHP, 
+Python and Ruby. The tests can then be run against most modern web browser
+ Selenium deploys on Windows, Linux, and Macintosh platforms.
+
+Types of Selenium:
+1.Selenium 2(aka,Selenium Webdriver)
+2.Selenium 1 (aka. Selenium RC or Remote Control
+3.Selenium IDE
+4.Selenium-Grid
+
+1.Selenium 2(aka,Selenium Webdriver):
+WebDriver will run the browser directly.
+
+2.Selenium 1 (aka. Selenium RC or Remote Control
+Selenium RC was the main Selenium project for a long time, before the
+WebDriver/Selenium merge brought up Selenium 2, the newest and more powerful tool.
+3.Selenium IDE:
+Selenium IDE (Integrated Development Environment) is a prototyping tool for 
+building test scripts. It is a Firefox plugin and provides an easy-to-use 
+interface for developing automated tests. Selenium IDE has a recording feature,
+ which records user actions as they are performed and then exports them as a 
+reusable script in one of many programming languages that can be later executed.
+
+4.Selenium-Grid
+Selenium-Grid allows the Selenium RC solution to scale for large test 
+suites and for test suites that must be run in multiple environments.
+
+
+How Does WebDriver ‘Drive’ the Browser Compared to Selenium-RC?
+
+1. Selenium-WebDriver makes direct calls to the browser using each browser’s 
+native support for automation.
+
+2.  It ‘injected’ javascript functions into the browser when the browser 
+was loaded and then used its javascript to drive the AUT within the browser.
+
+WebDriver and the Selenium-Server:
+
+If you will be only using the WebDriver API you do not need the 
+Selenium-Server
+
+There are some reasons though to use the Selenium-Server with Selenium-WebDriver:
+ 1.You are using Selenium-Grid to distribute your tests over multiple machines 
+or virtual machines (VMs).
+2.You want to connect to a remote machine that has a particular browser 
+version that is not on your current machine.
+3.You are not using the Java bindings (i.e. Python, C#, or Ruby) and would 
+like to use HtmlUnit Driver
+
+HtmlUnit Driver:
+This is currently the fastest and most lightweight implementation of WebDriver.
+ As the name suggests, this is based on HtmlUnit. HtmlUnit is a java based 
+implementation of a WebBrowser without a GUI. For any language binding (other
+ than java) the Selenium Server is required to use this driver.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

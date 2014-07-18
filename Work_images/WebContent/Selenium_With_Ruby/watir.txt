@@ -1,0 +1,134 @@
+http://rubyinstaller.org/downloads/
+
+
+
+
+
+
+http://watirwebdriver.com/
+
+Installing or Updating RubyGems:
+
+gem update --system --no-rdoc --no-ri
+
+1. gem install watir --no-rdoc --no-ri
+2. irb
+
+3. require "watir-webdriver"
+4. @browser = Watir::Browser.new
+WebDriver= This firefox can be remote controlled with WebDriver
+Example:
+
+5. @browser.goto "google.com" or
+@browser.goto "demo.borland.com/gmopost"
+Inspect Element
+@browser.input(:type => "button").click
+
+@browser.input(:type => "submit").click
+
+@browser.input(:type => "text").set "1"
+
+@browser.input(:name => "billName").set "Enam"
+
+@browser.input(:name => "billName").set("Watir World")
+
+
+
+6. @browser.input or text_field(:id => "qbqfq").set "Enam"
+
+7. @browser.input or text_field(:id => "qbqfq").click
+
+Setting a multi-line text box:
+browser.text_field(:name => 'entry.1.single').set 
+"I come here from Australia. \n The weather is great here."
+
+Setting and clearing a radio button:
+
+
+browser.radio(:value => 'Watir').set
+
+browser.radio(:value => 'Watir').clear
+
+Setting and clearing check boxes:
+
+browser.checkbox(:value => 'Ruby').set
+browser.checkbox(:value => 'Python').set
+browser.checkbox(:value => 'Python').clear
+
+Clearing, getting and selecting selection list values:
+
+browser.select_list(:name => 'entry.6.single').clear
+
+
+puts browser.select_list(:name => 'entry.6.single').options
+browser.select_list(:name => 'entry.6.single').select 'Chrome'
+
+
+require 'watir-webdriver'
+b = Watir::Browser.new
+b.goto 'demo.borland.com/gmopost/'
+
+b.text_field(:id => 'entry_0').set 'your name'
+
+
+
+
+b.select_list(:id => 'entry_1').select 'Ruby'
+
+b.input(:name => billZipCode).set '90020'
+
+
+b.radio(:value => 'A gem').set
+
+
+
+b.checkbox(:value => '1.8.6').set
+
+b.input(:name => 'bsubmit').click
+b.text.include? 'Thank you'
+
+
+For Example:
+
+#http://demo.borland.com/shopitv60/default.asp
+require 'watir-webdriver'
+b = Watir::Browser.new
+b.goto 'demo.borland.com/shopitv60/default.asp'
+
+b.a(:class => 'linkShopIt').click
+
+b.text_field(:name => "name").set "Enam"
+b.input(:name => "New-Name-Button").click
+b.a(:href => "products.asp").click
+b.a(:text => "Shirt").click
+b.a(:class => "linkShopIt").click
+
+b.a(:class => "linkShopIt").click
+b.a(:href => "products.asp").click
+
+b.a(:text => "Pants").click
+b.a(:class => "linkShopIt").click
+b.a(:class => "linkShopIt").click
+
+sleep 2
+b.a(:text => "Check out").click
+#b.a(:text => "Check out").when_present.click
+
+b.a(:text => "Continue").click
+b.text_field(:name => "address").set "351 S St Andrews Pl Apt306"
+b.text_field(:name => "city").set "LA"
+b.text_field(:name => "state").set "CA"
+b.text_field(:name => "zip").set "90020"
+
+
+b.select_list(:name => "cardtype").select "MasterCard"
+
+b.text_field(:name => "cardnumber").set "123-1234-1234"
+b.text_field(:name => "expiration").set "02/14"
+b.input(:name => "Buy now").click
+
+b.a(:class => "linkShopIt").click
+b.a(:class => "linkShopIt").click
+
+
+
